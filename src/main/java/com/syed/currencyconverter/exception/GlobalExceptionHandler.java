@@ -14,4 +14,10 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ExchangeRateApiException.class)
+    public ResponseEntity<ErrorResponse> handleExchangeRateApiException(ExchangeRateApiException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), HttpStatus.BAD_GATEWAY.value());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_GATEWAY);
+    }
 }

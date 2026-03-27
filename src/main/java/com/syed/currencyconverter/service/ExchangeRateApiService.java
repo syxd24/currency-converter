@@ -1,7 +1,7 @@
 package com.syed.currencyconverter.service;
 
 import com.syed.currencyconverter.dto.ExchangeRateApiResponse;
-import com.syed.currencyconverter.exception.BadRequestException;
+import com.syed.currencyconverter.exception.ExchangeRateApiException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,7 +20,7 @@ public class ExchangeRateApiService {
         ExchangeRateApiResponse response = restTemplate.getForObject(url, ExchangeRateApiResponse.class);
 
         if (response == null || response.getRates() == null || !response.getRates().containsKey(to)) {
-            throw new BadRequestException("Unable to fetch exchange rate for " + from + " to " + to);
+            throw new ExchangeRateApiException("Unable to fetch exchange rate for " + from + " to " + to);
         }
 
         return response.getRates().get(to);

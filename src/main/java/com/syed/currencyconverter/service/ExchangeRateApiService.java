@@ -4,6 +4,7 @@ import com.syed.currencyconverter.dto.ExchangeRateApiResponse;
 import com.syed.currencyconverter.exception.ExchangeRateApiException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -21,7 +22,13 @@ public class ExchangeRateApiService {
     public double getRate(String from, String to) {
         String url = baseUrl + "/latest?from=" + from + "&to=" + to;
 
-        ExchangeRateApiResponse response = restTemplate.getForObject(url, ExchangeRateApiResponse.class);
+        ExchangeRateApiResponse response;
+
+        try {
+            response = restTemplate.getForObject(url, ExchangeRateApiResponse.class);
+        } catch (RestClientException ex) {
+            throw new ExchangeRateApiException("Failed to call exchange rate API");
+        }
 
         if (response == null || response.getRates() == null || !response.getRates().containsKey(to)) {
             throw new ExchangeRateApiException("Unable to fetch exchange rate for " + from + " to " + to);

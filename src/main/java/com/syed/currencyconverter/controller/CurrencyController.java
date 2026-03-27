@@ -2,6 +2,7 @@ package com.syed.currencyconverter.controller;
 
 import com.syed.currencyconverter.dto.ConversionResponse;
 import com.syed.currencyconverter.service.CurrencyService;
+import jakarta.validation.constraints.Positive;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,7 @@ public class CurrencyController {
 
     @GetMapping("/api/convert")
     public ConversionResponse convertCurrency(
-            @RequestParam double amount,
+            @RequestParam @Positive double amount,
             @RequestParam String from,
             @RequestParam String to
     ) {

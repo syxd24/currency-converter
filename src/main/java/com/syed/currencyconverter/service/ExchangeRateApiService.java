@@ -12,9 +12,13 @@ public class ExchangeRateApiService {
     @Value("${exchange.api.base-url}")
     private String baseUrl;
 
-    public double getRate(String from, String to) {
-        RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
+    public ExchangeRateApiService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    public double getRate(String from, String to) {
         String url = baseUrl + "/latest?from=" + from + "&to=" + to;
 
         ExchangeRateApiResponse response = restTemplate.getForObject(url, ExchangeRateApiResponse.class);

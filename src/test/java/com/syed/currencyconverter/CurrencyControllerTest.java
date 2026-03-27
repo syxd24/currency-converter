@@ -51,4 +51,13 @@ class CurrencyControllerTest {
                         .param("to", "USD"))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    void shouldReturnOkWhenFromAndToCurrenciesAreSame() throws Exception {
+        mockMvc.perform(get("/api/convert")
+                        .param("amount", "100")
+                        .param("from", "EUR")
+                        .param("to", "EUR"))
+                .andExpect(status().isOk());
+    }
 }

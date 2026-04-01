@@ -3,50 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Currency Converter</title>
+    <title>Fluxr — Live Currency Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-    <h1>Currency Converter</h1>
 
-    <form id="converter-form">
-        <div class="form-group">
-            <label for="amount">Amount:</label>
-            <input type="number" id="amount" name="amount" step="any" required>
-        </div>
+<nav class="navbar">
+    <div class="nav-brand">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-name">Fluxr</span>
+    </div>
+    <div class="nav-links">
+        <a href="#">Rates</a>
+        <a href="#">About</a>
+    </div>
+</nav>
 
-        <div class="form-group">
-            <label for="from">From:</label>
-            <select id="from" name="from" required>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="INR">INR</option>
-            </select>
-        </div>
+<div class="hero-section">
+    <div class="hero-bg-text">CONVERT</div>
+    <h1 class="hero-title">Live Currency<br><span class="accent">Exchange.</span></h1>
+    <p class="hero-sub">Real-time mid-market rates. No hidden fees. Just numbers.</p>
+</div>
 
-        <div class="form-group">
-            <label for="to">To:</label>
-            <select id="to" name="to" required>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="INR">INR</option>
-            </select>
-        </div>
-
-        <button type="submit">Convert</button>
-    </form>
-
-    <div id="result-container" style="display: none;">
-        <h2>Result</h2>
-        <div id="result"></div>
+<div class="card-wrapper">
+    <div class="rate-badge" id="rate-badge">
+        <span class="rate-dot"></span>
+        <span id="rate-text">Live rates loading…</span>
     </div>
 
-    <div id="error-container" style="display: none;">
-        <h2>Error</h2>
-        <div id="error"></div>
-    </div>
+    <div class="converter-card">
 
+        <!-- FROM -->
+        <div class="field-group">
+            <label class="field-label">Amount</label>
+            <div class="input-row">
+                <input type="number" id="amount" value="1000" step="any" min="0" placeholder="0.00" />
+                <div class="currency-select-wrapper">
+                    <select id="from">
+                        <option value="USD">🇺🇸 USD</option>
+                        <option value="EUR">🇪🇺 EUR</option>
+                        <option value="GBP" selected>🇬🇧 GBP</option>
+                        <option value="PLN">🇵🇱 PLN</option>
+                        <option value="JPY">🇯🇵 JPY</option>
+                        <option value="CHF">🇨🇭 CHF</option>
+                        <option value="CAD">🇨🇦 CAD</option>
+                        <option value="AUD">🇦🇺 AUD</option>
+                        <option value="INR">🇮🇳 INR</option>
+                        <option value="CNY">🇨🇳 CNY</option>
+                        <option value="BRL">🇧🇷 BRL</option>
+                        <option value="MXN">🇲🇽 MXN</option>
+                        <option value="KRW">🇰🇷 KRW</option>
+                        <option value="SGD">🇸🇬 SGD</option>
+                        <option value="NOK">🇳🇴 NOK</option>
+                        <option value="SEK">🇸🇪 SEK</option>
+                        <option value="DKK">🇩🇰 DKK</option>
+                        <option value="CZK">🇨🇿 CZK</option>
+                        <option value="HUF">🇭🇺 HUF</option>
+                        <option value="TRY">🇹🇷 TRY</option>
+                        <option value="UAH">🇺🇦 UAH</option>
+                        <option value="RUB">🇷🇺 RUB</option>
+                        <option value="ZAR">🇿🇦 ZAR</option>
+                        <option value="AED">🇦🇪 AED</option>
+                        <option value="THB">🇹🇭 THB</option>
+                        <option value="IDR">🇮🇩 IDR</option>
+                        <option value="MYR">🇲🇾 MYR</option>
+                        <option value="PHP">🇵🇭 PHP</option>
+                        <option value="HKD">🇭🇰 HKD</option>
+                        <option value="NZD">🇳🇿 NZD</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- SWAP -->
+        <div class="swap-row">
+            <div class="divider-line"></div>
+            <button class="swap-btn" id="swap-btn" title="Swap currencies">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                </svg>
+            </button>
+            <div class="divider-line"></div>
+        </div>
+
+        <!-- TO -->
+        <div class="field-group">
+            <label class="field-label">Converted to</label>
+            <div class="input-row result-row">
+                <div class="result-amount" id="result-amount">
+                    <!-- Loading skeleton or result -->
+                    <span class="skeleton-line" id="result-skeleton"></span>
+                    <span id="result-value" style="display:none">—</span>
+                </div>
+                <div class="currency-select-wrapper">
+                    <select id="to">
+                        <option value="USD">🇺🇸 USD</option>
+                        <option value="EUR" selected>🇪🇺 EUR</option>
+                        <option value="GBP">🇬🇧 GBP</option>
+                        <option value="PLN">🇵🇱 PLN</option>
+                        <option value="JPY">🇯🇵 JPY</option>
+                        <option value="CHF">🇨🇭 CHF</option>
+                        <option value="CAD">🇨🇦 CAD</option>
+                        <option value="AUD">🇦🇺 AUD</option>
+                        <option value="INR">🇮🇳 INR</option>
+                        <option value="CNY">🇨🇳 CNY</option>
+                        <option value="BRL">🇧🇷 BRL</option>
+                        <option value="MXN">🇲🇽 MXN</option>
+                        <option value="KRW">🇰🇷 KRW</option>
+                        <option value="SGD">🇸🇬 SGD</option>
+                        <option value="NOK">🇳🇴 NOK</option>
+                        <option value="SEK">🇸🇪 SEK</option>
+                        <option value="DKK">🇩🇰 DKK</option>
+                        <option value="CZK">🇨🇿 CZK</option>
+                        <option value="HUF">🇭🇺 HUF</option>
+                        <option value="TRY">🇹🇷 TRY</option>
+                        <option value="UAH">🇺🇦 UAH</option>
+                        <option value="RUB">🇷🇺 RUB</option>
+                        <option value="ZAR">🇿🇦 ZAR</option>
+                        <option value="AED">🇦🇪 AED</option>
+                        <option value="THB">🇹🇭 THB</option>
+                        <option value="IDR">🇮🇩 IDR</option>
+                        <option value="MYR">🇲🇾 MYR</option>
+                        <option value="PHP">🇵🇭 PHP</option>
+                        <option value="HKD">🇭🇰 HKD</option>
+                        <option value="NZD">🇳🇿 NZD</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOADING STATE -->
+        <div class="loading-bar-wrapper" id="loading-bar-wrapper" style="display:none">
+            <div class="loading-bar">
+                <div class="loading-bar-fill"></div>
+            </div>
+            <span class="loading-text">Fetching live rate…</span>
+        </div>
+
+        <!-- ERROR -->
+        <div class="error-box" id="error-box" style="display:none">
+            <span>⚠️</span>
+            <span id="error-msg">Something went wrong. Please try again.</span>
+        </div>
+
+        <!-- SUBMIT -->
+        <button class="convert-btn" id="convert-btn">
+            <span class="btn-text">Convert</span>
+            <span class="btn-spinner" id="btn-spinner" style="display:none">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                </svg>
+            </span>
+        </button>
+
+        <p class="footer-note">Powered by <strong>Frankfurter API</strong> · Mid-market rates · No sign-up needed</p>
+    </div>
 </div>
 
 <script src="script.js"></script>

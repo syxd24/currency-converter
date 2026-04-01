@@ -1,82 +1,106 @@
-Currency Converter
+# ⚡ Currency Converter
 
-##Overview
+> A full-stack currency conversion app built with **Java Spring Boot** and live exchange rates from the **Frankfurter API**.
 
-Currency Converter is a full-stack web application built with Java Spring Boot that converts amounts between currencies using live exchange rates from the Frankfurter API.
-The project includes a backend REST API, a simple frontend built with HTML, CSS, and JavaScript, input validation, global exception handling, unit and controller tests, and deployment support for cloud platforms such as Railway.
+![Java](https://img.shields.io/badge/Java-21-orange?style=flat-square&logo=openjdk)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=flat-square&logo=springboot)
+![Maven](https://img.shields.io/badge/Maven-build-C71A36?style=flat-square&logo=apachemaven)
+![Railway](https://img.shields.io/badge/Deployed-Railway-0B0D0E?style=flat-square&logo=railway)
+![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
 
-##Features
+**🌐 Live Demo → [currency-converter-production-7b51.up.railway.app](https://currency-converter-production-7b51.up.railway.app/)**
 
-Convert amounts between currencies using live exchange rates
-REST API built with Spring Boot
-Frontend integrated into the same Spring Boot application
-Input validation for amount and currency fields
-Proper error handling with meaningful error responses
-Unit tests for the service layer
-Controller tests for API endpoints
-Deployment-ready configuration
-Tech Stack
-Backend
-Java
-Spring Boot
-Maven
-Frontend
-HTML
-CSS
-JavaScript
-Testing
-JUnit
-Spring Boot Test
-MockMvc
-External API
-Frankfurter API
-Deployment
-Railway
+---
 
-##Project Structure
+## 📸 Preview
 
+> A clean, responsive UI served directly from Spring Boot static resources — no separate frontend server needed.
+
+---
+
+## ✨ Features
+
+- 💱 Real-time currency conversion using live mid-market exchange rates
+- 🌍 REST API built with Spring Boot
+- ✅ Input validation with meaningful error messages
+- 🛡️ Global exception handling
+- 🧪 Unit tests (service layer) and controller tests (MockMvc)
+- 🚀 Deployment-ready for Railway and Render
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Backend | Java 21, Spring Boot |
+| Build Tool | Maven |
+| Frontend | HTML, CSS, JavaScript |
+| Testing | JUnit 5, MockMvc |
+| External API | [Frankfurter API](https://www.frankfurter.app/) |
+| Deployment | Railway |
+
+---
+
+## 📁 Project Structure
+
+```
 src
 ├── main
 │   ├── java/com/syed/currencyconverter
-│   │   ├── client
-│   │   ├── config
-│   │   ├── controller
-│   │   ├── dto
-│   │   ├── exception
-│   │   ├── service
+│   │   ├── client/           # Frankfurter API HTTP client
+│   │   ├── config/           # App configuration
+│   │   ├── controller/       # REST controllers
+│   │   ├── dto/              # Request/Response DTOs
+│   │   ├── exception/        # Global exception handler
+│   │   ├── service/          # Business logic
 │   │   └── CurrencyconverterApplication.java
 │   └── resources
-│       ├── static
+│       ├── static/
 │       │   ├── index.html
 │       │   ├── style.css
 │       │   └── script.js
 │       └── application.properties
 └── test
     └── java/com/syed/currencyconverter
-        ├── service
+        ├── service/
         │   ├── CurrencyServiceTest.java
         │   └── ExchangeRateApiServiceTest.java
         ├── CurrencyControllerTest.java
         └── CurrencyconverterApplicationTests.java
+```
 
-##How It Works
+---
 
-The application accepts an amount, a source currency, and a target currency from the user.
-The frontend sends a request to the backend API.
-The backend fetches the latest exchange rate from the Frankfurter API, performs the conversion, and returns the result to the user.
+## 🔌 API Reference
 
-API Endpoints
-Health Check
+### Health Check
+
+```
 GET /api/health
+```
 
-Example response:
-
+**Response**
+```
 Currency Converter API is running
-Convert Currency
+```
+
+---
+
+### Convert Currency
+
+```
 GET /api/convert?amount=100&from=USD&to=EUR
+```
 
-Example response:
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `amount` | `number` | ✅ | Amount to convert (must be > 0) |
+| `from` | `string` | ✅ | Source currency code (e.g. `USD`) |
+| `to` | `string` | ✅ | Target currency code (e.g. `EUR`) |
 
+**Success Response `200 OK`**
+```json
 {
   "amount": 100.0,
   "from": "USD",
@@ -84,87 +108,114 @@ Example response:
   "rate": 0.92,
   "convertedAmount": 92.0
 }
-Validation and Error Handling
+```
 
-The application validates user input before processing the request.
-
-Examples of invalid cases:
-
-Amount is missing
-Amount is zero or negative
-Currency code is missing
-Source and target currency are the same
-External exchange rate API is unavailable
-
-Example error response:
-
+**Error Response `400 Bad Request`**
+```json
 {
   "message": "Amount must be greater than zero",
   "status": 400
 }
-Running the Application Locally
-Prerequisites
-Java 21
-Git
-Clone the Repository
-git clone <your-repository-url>
+```
+
+---
+
+## ⚠️ Validation Rules
+
+The API rejects requests that are invalid. Examples of handled error cases:
+
+- Amount is missing or zero or negative
+- Currency code is missing or malformed
+- Source and target currency are the same
+- External Frankfurter API is unavailable
+
+---
+
+## 🚀 Running Locally
+
+### Prerequisites
+
+- Java 21+
+- Git
+
+### Steps
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/syxd24/currency-converter.git
 cd currencyconverter
-Run the Application
 
-On Windows:
+# 2. Run the application
+.\mvnw spring-boot:run        # Windows
+./mvnw spring-boot:run        # macOS / Linux
+```
 
-.\mvnw spring-boot:run
+The app starts on **http://localhost:9090**
 
-The application will start on:
+The frontend UI is available at **http://localhost:9090/**
 
-http://localhost:9090
-Running Tests
+---
 
-On Windows:
+## 🧪 Running Tests
 
-.\mvnw test
-Building the Project
+```bash
+.\mvnw test        # Windows
+./mvnw test        # macOS / Linux
+```
 
-On Windows:
+---
 
-.\mvnw clean package
+## 📦 Building the JAR
 
-The generated JAR file will be created in the target directory.
+```bash
+.\mvnw clean package        # Windows
+./mvnw clean package        # macOS / Linux
+```
 
-Frontend Access
+Output: `target/currencyconverter-*.jar`
 
-Because the frontend is served from Spring Boot static resources, the UI is available directly from the root path:
+---
 
-http://localhost:9090/
-Deployment
+## ☁️ Deployment
 
-This project is configured to run on Railway.
+This project is deployed on **Railway**. The port is configured to use the platform-provided `$PORT` environment variable with a local fallback:
 
-The application uses the following port configuration in application.properties:
-
+```properties
+# application.properties
 server.port=${PORT:9090}
+```
 
-This allows local development on port 9090 and cloud deployment using the platform-provided port.
+To deploy your own instance, push to a connected GitHub repository on Railway or Render — no additional configuration needed.
 
-Live Demo
-https://currency-converter-production-7b51.up.railway.app/
-Future Improvements
-Add more supported currencies dynamically
-Improve result formatting and rounding
-Enhance UI styling and responsiveness
-Add integration tests
-Add loading indicators and better frontend feedback
-Add historical exchange rate support
-Learning Goals of This Project
+---
 
-This project was built to practice real backend and full-stack development concepts, including:
+## 🗺️ Roadmap
 
-Building REST APIs with Spring Boot
-Structuring code using controllers, services, DTOs, and exceptions
-Consuming third-party APIs
-Writing unit and controller tests
-Connecting frontend and backend in one application
-Preparing and deploying a production-ready application
-Author
+- [ ] Add more supported currencies dynamically
+- [ ] Historical exchange rate chart
+- [ ] Improve result formatting and rounding
+- [ ] Add integration tests
+- [ ] PWA support (offline mode)
 
-Syed
+---
+
+## 🎯 Learning Goals
+
+This project was built to practice real backend and full-stack development:
+
+- Building REST APIs with Spring Boot
+- Structuring code with controllers, services, DTOs, and exceptions
+- Consuming third-party APIs (Frankfurter)
+- Writing unit and controller tests with JUnit & MockMvc
+- Connecting a frontend and backend in one Spring Boot app
+- Deploying a production-ready Java application to the cloud
+
+---
+
+## 👤 Author
+
+**Syed** · [@syxd24](https://github.com/syxd24)
+
+---
+
+*Built with ☕ Java and Spring Boot*
